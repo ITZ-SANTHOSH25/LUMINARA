@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>LUMINARA — A Journey into the Cursed Line Forest</title>
+<link rel="stylesheet" href="styles.css" />
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+    "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+  }
+}
+</script>
+
+</head>
+<body>
+<div id="app">
+  <canvas id="game-canvas"></canvas>
+
+  <!-- ===================== HUD ===================== -->
+  <div id="hud" class="hidden">
+    <div id="hud-top-left">
+      <div id="phase-label">PHASE 1</div>
+      <div id="phase-name">CURSED LINE FOREST</div>
+    </div>
+    <div id="hud-top-right">
+      <button id="pause-btn" title="Pause (ESC)">❚❚</button>
+    </div>
+    <div id="objective-panel">
+      <div class="obj-title">OBJECTIVE</div>
+      <div id="objective-text">Discover the correct path.</div>
+    </div>
+    <div id="clue-panel" class="hidden">
+      <div class="clue-title">CLUE DISCOVERED</div>
+      <div id="clue-text"></div>
+    </div>
+    <div id="puzzle-status" class="hidden"></div>
+    <div id="interact-prompt" class="hidden">Press <b>E</b> to interact</div>
+    <div id="crosshair"></div>
+    <div id="subtitle" class="hidden"></div>
+    <div id="toast" class="hidden"></div>
+    <div id="inventory">
+      <div class="inv-slot" id="inv-blueberry" title="Blueberry">🫐<span class="inv-count" id="inv-blueberry-count">0</span></div>
+      <div class="inv-slot" id="inv-stick" title="Stick">🪵<span class="inv-count" id="inv-stick-count">0</span></div>
+      <div class="inv-slot" id="inv-board" title="Sand Board">▭<span class="inv-count" id="inv-board-count">0</span></div>
+    </div>
+    <div id="p2-hud" class="hidden">
+      <div class="p2-title">PLAYER 2</div>
+      <div class="p2-hint">Arrow Keys = Move · <b>Enter</b> = Attack</div>
+    </div>
+  </div>
+
+  <!-- ===================== INSPECTION OVERLAY ===================== -->
+  <div id="inspect-overlay" class="hidden">
+    <div id="inspect-title"></div>
+    <div id="inspect-desc"></div>
+    <div id="inspect-hint">Drag to rotate · Scroll to zoom · <b>E</b> / <b>ESC</b> to close</div>
+  </div>
+
+  <!-- ===================== MENUS ===================== -->
+  <div id="menu" class="overlay">
+    <div class="menu-inner">
+      <h1 class="title">LUMINARA</h1>
+      <p class="subtitle">A Journey into the Cursed Line Forest</p>
+      <div class="menu-buttons">
+        <button id="btn-new" class="menu-btn primary">New Journey</button>
+        <button id="btn-continue" class="menu-btn">Continue</button>
+        <button id="btn-controls" class="menu-btn">Controls</button>
+      </div>
+      <p class="menu-foot">A father's search for <i>Rauvolfia serpentina</i>.</p>
+    </div>
+  </div>
+
+  <div id="controls-screen" class="overlay hidden">
+    <div class="menu-inner">
+      <h2>CONTROLS</h2>
+      <div class="controls-grid">
+        <div><b>W A S D</b></div><div>Move</div>
+        <div><b>Mouse</b></div><div>Look around</div>
+        <div><b>E</b></div><div>Interact / Inspect</div>
+        <div><b>Left Mouse</b></div><div>Use / Throw / Attack</div>
+        <div><b>Right Mouse</b></div><div>Inspect / Zoom</div>
+        <div><b>Space</b></div><div>Jump</div>
+        <div><b>ESC</b></div><div>Pause</div>
+      </div>
+      <h3 class="p4-head">PHASE 4 — TWO PLAYERS</h3>
+      <div class="controls-grid">
+        <div><b>Player 1</b></div><div>W A S D + Mouse · <b>F</b> = Attack</div>
+        <div><b>Player 2</b></div><div>Arrow Keys · <b>Enter</b> = Attack</div>
+      </div>
+      <button id="btn-controls-back" class="menu-btn primary">Back</button>
+    </div>
+  </div>
+
+  <div id="pause-menu" class="overlay hidden">
+    <div class="menu-inner">
+      <h2>PAUSED</h2>
+      <div class="menu-buttons">
+        <button id="btn-resume" class="menu-btn primary">Resume</button>
+        <button id="btn-restart-phase" class="menu-btn">Restart Phase</button>
+        <button id="btn-main-menu" class="menu-btn">Main Menu</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="cinematic" class="overlay hidden">
+    <div id="cine-bars-top" class="cine-bar"></div>
+    <div id="cine-bars-bottom" class="cine-bar"></div>
+    <div id="cine-text"></div>
+    <div id="cine-skip">Press <b>SPACE</b> to continue</div>
+  </div>
+
+  <div id="ending" class="overlay hidden">
+    <div class="menu-inner">
+      <h1 class="title small">LUMINARA</h1>
+      <p class="subtitle">JOURNEY COMPLETE</p>
+      <p id="ending-text"></p>
+      <div class="menu-buttons">
+        <button id="btn-replay" class="menu-btn">Replay Phase</button>
+        <button id="btn-ending-menu" class="menu-btn primary">Main Menu</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="loading" class="overlay">
+    <div class="menu-inner">
+      <div class="spinner"></div>
+      <p id="loading-text">Entering the forest…</p>
+    </div>
+  </div>
+
+  <div id="click-to-play" class="overlay hidden">
+    <div class="menu-inner">
+      <p class="ctp">Click to look around</p>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="src/main.js"></script>
+</body>
+</html>
